@@ -26,7 +26,7 @@ Before doing anything else:
 | 2 | Docker + Docker Compose | ✅ | Build verified; frontend 200 OK on :5173, backend `{"status":"ok"}` on :3001, prisma db push runs on startup |
 | 3 | Auth (register, login, JWT) | ✅ | bcryptjs + JWT; Prisma v7 uses PrismaLibSql adapter (pass config obj not client); stale server on :3001 was masking bugs |
 | 4 | Subjects CRUD | ✅ | GET/POST/PATCH/DELETE /api/subjects; SubjectSidebar with inline add/edit/delete; useSubjects hook |
-| 5 | Chat Tutor (Gemini API + UI) | ⬜ | |
+| 5 | Chat Tutor (Gemini API + UI) | ✅ | gemini-2.5-flash streaming SSE; ChatWindow + MessageBubble + ChatPage; Normal/Beginner/Challenge modes |
 | 6 | Document Upload (Supabase Storage + text extraction) | ⬜ | |
 | 7 | Flashcard Decks (manual creation + UI) | ⬜ | |
 | 8 | AI Flashcard Generation | ⬜ | |
