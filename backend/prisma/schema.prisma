@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  streak    Int      @default(0)
+  xp        Int      @default(0)
+
+  subjects    Subject[]
+  decks       Deck[]
+  documents   Document[]
+  studyBlocks StudyBlock[]
+}
+
+model Subject {
+  id     String @id @default(cuid())
+  userId String
+  name   String
+  color  String @default("#6366f1")
+  icon   String @default("📚")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatMessages ChatMessage[]
+  decks        Deck[]
+  documents    Document[]
+  studyBlocks  StudyBlock[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  subjectId String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+}
+
+model Deck {
+  id        String   @id @default(cuid())
+  userId    String
+  subjectId String?
+  name      String
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  cards   Card[]
+}
+
+model Card {
+  id          String   @id @default(cuid())
+  deckId      String
+  front       String
+  back        String
+  interval    Int      @default(1)
+  easeFactor  Float    @default(2.5)
+  dueDate     DateTime @default(now())
+  reviewCount Int      @default(0)
+
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+}
+
+model Document {
+  id            String   @id @default(cuid())
+  userId        String
+  subjectId     String?
+  filename      String
+  filepath      String
+  extractedText String?
+  createdAt     DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+}
+
+model StudyBlock {
+  id        String   @id @default(cuid())
+  userId    String
+  subjectId String?
+  date      DateTime
+  startTime String
+  endTime   String
+  completed Boolean  @default(false)
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+}
