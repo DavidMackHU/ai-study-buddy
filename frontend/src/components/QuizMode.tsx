@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { api } from '../lib/api'
 
 interface Card {
   id: string
@@ -13,6 +14,7 @@ interface Question {
 }
 
 interface Props {
+  deckId: string
   cards: Card[]
   onComplete: (correct: number, total: number) => void
   onBack: () => void
@@ -35,7 +37,7 @@ function buildQuestions(cards: Card[]): Question[] {
   })
 }
 
-export function QuizMode({ cards, onComplete, onBack }: Props) {
+export function QuizMode({ deckId, cards, onComplete, onBack }: Props) {
   const [questions, setQuestions] = useState<Question[]>(() => buildQuestions(cards))
   const [index, setIndex] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
@@ -82,7 +84,10 @@ export function QuizMode({ cards, onComplete, onBack }: Props) {
             className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
             Retry
           </button>
-          <button onClick={() => onComplete(correct, questions.length)}
+          <button onClick={async () => {
+            await api.post(`/decks/${deckId}/quiz-complete`, {}).catch(() => {})
+            onComplete(correct, questions.length)
+          }}
             className="text-sm text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100">
             Done
           </button>

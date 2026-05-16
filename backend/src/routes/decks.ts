@@ -209,12 +209,34 @@ router.post('/:id/review', async (req, res) => {
   )
   const dueDate = new Date(Date.now() + newInterval * 24 * 60 * 60 * 1000)
 
-  const updated = await prisma.card.update({
-    where: { id: card.id },
-    data: { interval: newInterval, easeFactor, dueDate, reviewCount: card.reviewCount + 1 },
-  })
+  const [updated] = await prisma.$transaction([
+    prisma.card.update({
+      where: { id: card.id },
+      data: { interval: newInterval, easeFactor, dueDate, reviewCount: card.reviewCount + 1 },
+    }),
+    prisma.user.update({
+      where: { id: req.userId! },
+      data: { xp: { increment: 5 } },
+    }),
+  ])
 
   res.json(updated)
+})
+
+router.post('/:id/quiz-complete', async (req, res) => {
+  const deck = await prisma.deck.findFirst({
+    where: { id: req.params.id, userId: req.userId! },
+  })
+  if (!deck) {
+    res.status(404).json({ error: 'Deck not found' })
+    return
+  }
+  const user = await prisma.user.update({
+    where: { id: req.userId! },
+    data: { xp: { increment: 10 } },
+    select: { xp: true },
+  })
+  res.json({ xp: user.xp })
 })
 
 export default router

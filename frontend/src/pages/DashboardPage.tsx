@@ -33,7 +33,10 @@ export function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null)
 
   useEffect(() => {
-    api.get<Stats>('/stats').then(setStats).catch(() => {})
+    const loadStats = () => api.get<Stats>('/stats').then(setStats).catch(() => {})
+    loadStats()
+    const id = setInterval(loadStats, 30000)
+    return () => clearInterval(id)
   }, [])
 
   const selectedSubject = subjects.find(s => s.id === selectedSubjectId)

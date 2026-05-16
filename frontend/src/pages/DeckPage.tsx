@@ -177,6 +177,7 @@ export function DeckPage() {
 
         {mode === 'quiz' && (
           <QuizMode
+            deckId={deckId!}
             cards={cards}
             onComplete={() => setMode('list')}
             onBack={() => setMode('list')}

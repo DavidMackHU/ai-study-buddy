@@ -52,6 +52,12 @@ router.patch('/:id', async (req, res) => {
     data: { completed: !block.completed },
     include: { subject: { select: { name: true, color: true, icon: true } } },
   })
+  if (!block.completed) {
+    await prisma.user.update({
+      where: { id: req.userId! },
+      data: { xp: { increment: 20 } },
+    })
+  }
   res.json(updated)
 })
 

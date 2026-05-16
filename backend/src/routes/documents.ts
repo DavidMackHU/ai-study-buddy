@@ -73,15 +73,21 @@ router.post('/upload', upload.single('file'), async (req: Request, res) => {
     console.error('[documents] text extraction failed:', e)
   }
 
-  const document = await prisma.document.create({
-    data: {
-      userId: req.userId!,
-      subjectId: subjectId || null,
-      filename: file.originalname,
-      filepath: storagePath,
-      extractedText,
-    },
-  })
+  const [document] = await prisma.$transaction([
+    prisma.document.create({
+      data: {
+        userId: req.userId!,
+        subjectId: subjectId || null,
+        filename: file.originalname,
+        filepath: storagePath,
+        extractedText,
+      },
+    }),
+    prisma.user.update({
+      where: { id: req.userId! },
+      data: { xp: { increment: 15 } },
+    }),
+  ])
 
   res.status(201).json(document)
 })

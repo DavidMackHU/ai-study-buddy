@@ -109,9 +109,15 @@ router.post('/', async (req, res) => {
       }
     }
 
-    await prisma.chatMessage.create({
-      data: { subjectId, role: 'assistant', content: fullContent },
-    })
+    await Promise.all([
+      prisma.chatMessage.create({
+        data: { subjectId, role: 'assistant', content: fullContent },
+      }),
+      prisma.user.update({
+        where: { id: req.userId! },
+        data: { xp: { increment: 2 } },
+      }),
+    ])
 
     res.write('data: [DONE]\n\n')
     res.end()
