@@ -5,8 +5,6 @@ import WebSocket from 'ws'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { prisma } from '../lib/prisma'
 import { authenticate } from '../middleware/auth'
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require('pdf-parse') as (buf: Buffer) => Promise<{ text: string }>
 import mammoth from 'mammoth'
 
 const router = Router()
@@ -27,14 +25,16 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 async function extractText(buffer: Buffer, mimetype: string): Promise<string> {
   if (mimetype === 'application/pdf') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const pdfParse = require('pdf-parse') as (buf: Buffer) => Promise<{ text: string }>
     const data = await pdfParse(buffer)
-    return data.text
+    return data.text?.trim() ?? ''
   }
   if (mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
     const result = await mammoth.extractRawText({ buffer })
-    return result.value
+    return result.value.trim()
   }
-  return buffer.toString('utf-8')
+  return buffer.toString('utf-8').trim()
 }
 
 router.get('/', async (req, res) => {
@@ -67,9 +67,10 @@ router.post('/upload', upload.single('file'), async (req: Request, res) => {
 
   let extractedText: string | null = null
   try {
-    extractedText = await extractText(file.buffer, file.mimetype)
-  } catch {
-    // text extraction is best-effort; document still saved
+    const text = await extractText(file.buffer, file.mimetype)
+    extractedText = text.length > 0 ? text : null
+  } catch (e) {
+    console.error('[documents] text extraction failed:', e)
   }
 
   const document = await prisma.document.create({
