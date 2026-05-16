@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useSubjects } from '../hooks/useSubjects'
 import { DocumentCard } from '../components/DocumentCard'
+import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
 
 interface DocSubject {
@@ -35,6 +36,7 @@ export function UploadPage() {
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
   const [selectedSubjectId, setSelectedSubjectId] = useState('')
   const [dragOver, setDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -47,8 +49,9 @@ export function UploadPage() {
   }, [])
 
   async function uploadFile(file: File) {
+    setUploadError('')
     if (!ALLOWED_TYPES.includes(file.type)) {
-      alert('Only PDF, DOCX, and TXT files are supported.')
+      setUploadError('Only PDF, DOCX, and TXT files are supported.')
       return
     }
 
@@ -66,13 +69,13 @@ export function UploadPage() {
       })
       if (!res.ok) {
         const data = await res.json()
-        alert(data.error || 'Upload failed')
+        setUploadError(data.error || 'Upload failed')
         return
       }
       const refreshed = await api.get<Document[]>('/documents')
       setDocuments(refreshed)
     } catch {
-      alert('Upload failed. Check your connection.')
+      setUploadError('Upload failed. Check your connection.')
     } finally {
       setUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
@@ -105,7 +108,7 @@ export function UploadPage() {
           <h1 className="text-lg font-semibold text-indigo-600">Documents</h1>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">{user?.name}</span>
+          <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
           <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">
             Sign out
           </button>
@@ -131,6 +134,12 @@ export function UploadPage() {
               <option key={s.id} value={s.id}>{s.icon} {s.name}</option>
             ))}
           </select>
+
+          {uploadError && (
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+              {uploadError}
+            </div>
+          )}
 
           <div
             onDragOver={e => { e.preventDefault(); setDragOver(true) }}
@@ -168,7 +177,7 @@ export function UploadPage() {
         <div>
           <h2 className="font-semibold text-gray-900 mb-3">Your Documents</h2>
           {loading ? (
-            <p className="text-sm text-gray-400">Loading…</p>
+            <Spinner className="mx-auto mt-4" />
           ) : documents.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-xl p-8 text-center">
               <p className="text-gray-400 text-sm">No documents yet. Upload your first file above.</p>

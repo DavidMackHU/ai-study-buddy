@@ -46,7 +46,7 @@ export function DashboardPage() {
       <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <h1 className="text-lg font-semibold text-indigo-600">AI Study Buddy</h1>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">Hi, {user?.name}</span>
+          <span className="hidden sm:inline text-sm text-gray-600">Hi, {user?.name}</span>
           <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">
             Sign out
           </button>
@@ -63,7 +63,7 @@ export function DashboardPage() {
           </div>
         )}
 
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           <SubjectSidebar
             subjects={subjects}
             selectedId={selectedSubjectId}

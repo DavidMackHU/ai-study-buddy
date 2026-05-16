@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { PageSpinner } from '../components/Spinner'
 import { StudyMode } from '../components/StudyMode'
 import { ReviewMode } from '../components/ReviewMode'
 import { QuizMode } from '../components/QuizMode'
@@ -39,6 +40,7 @@ export function DeckPage() {
   const [genTopic, setGenTopic] = useState('')
   const [genCount, setGenCount] = useState('10')
   const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState('')
 
   useEffect(() => {
     if (!deckId) return
@@ -78,6 +80,7 @@ export function DeckPage() {
     if (!genTopic.trim()) return
     setGenerating(true)
     try {
+      setGenError('')
       const newCards = await api.post<Card[]>(`/decks/${deckId}/generate`, {
         topic: genTopic.trim(),
         count: Number(genCount),
@@ -86,7 +89,7 @@ export function DeckPage() {
       setGenTopic('')
       setShowGenForm(false)
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Generation failed')
+      setGenError(err instanceof Error ? err.message : 'Generation failed')
     } finally {
       setGenerating(false)
     }
@@ -97,13 +100,7 @@ export function DeckPage() {
     setCards(prev => prev.filter(c => c.id !== cardId))
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-400 text-sm">Loading…</p>
-      </div>
-    )
-  }
+  if (loading) return <PageSpinner />
 
   if (!deck) {
     return (
@@ -121,7 +118,7 @@ export function DeckPage() {
           <h1 className="text-lg font-semibold text-indigo-600">{deck.name}</h1>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">{user?.name}</span>
+          <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
           <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
         </div>
       </nav>
@@ -222,6 +219,7 @@ export function DeckPage() {
                     className="text-sm text-gray-500 px-3 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
                 </div>
                 {generating && <p className="text-xs text-indigo-400 animate-pulse">Gemini is writing your flashcards…</p>}
+                {genError && <p className="text-xs text-red-600">{genError}</p>}
               </form>
             )}
 
@@ -263,7 +261,7 @@ export function DeckPage() {
                 {cards.map((card, i) => (
                   <div key={card.id} className="bg-white border border-gray-200 rounded-xl p-4 flex gap-4 items-start">
                     <span className="text-xs text-gray-300 font-mono pt-0.5 shrink-0">{i + 1}</span>
-                    <div className="flex-1 min-w-0 grid grid-cols-2 gap-4">
+                    <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                       <div>
                         <p className="text-xs font-semibold text-gray-400 mb-1">Front</p>
                         <p className="text-sm text-gray-900">{card.front}</p>

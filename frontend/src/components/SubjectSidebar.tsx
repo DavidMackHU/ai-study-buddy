@@ -122,7 +122,7 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
   )
 
   return (
-    <aside className="w-64 shrink-0">
+    <aside className="w-full lg:w-64 shrink-0">
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-semibold text-gray-700">Subjects</h3>

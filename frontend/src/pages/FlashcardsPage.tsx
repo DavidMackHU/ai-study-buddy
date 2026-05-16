@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useSubjects } from '../hooks/useSubjects'
+import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
 
 interface DeckSubject {
@@ -24,6 +25,7 @@ export function FlashcardsPage() {
   const { subjects } = useSubjects()
   const [decks, setDecks] = useState<Deck[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [creating, setCreating] = useState(false)
   const [newName, setNewName] = useState('')
   const [newSubjectId, setNewSubjectId] = useState('')
@@ -32,7 +34,7 @@ export function FlashcardsPage() {
   useEffect(() => {
     api.get<Deck[]>('/decks')
       .then(setDecks)
-      .catch(() => {})
+      .catch(() => setError('Failed to load decks. Please refresh.'))
       .finally(() => setLoading(false))
   }, [])
 
@@ -68,7 +70,7 @@ export function FlashcardsPage() {
           <h1 className="text-lg font-semibold text-indigo-600">Flashcards</h1>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">{user?.name}</span>
+          <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
           <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
         </div>
       </nav>
@@ -124,8 +126,12 @@ export function FlashcardsPage() {
           </form>
         )}
 
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">{error}</div>
+        )}
+
         {loading ? (
-          <p className="text-sm text-gray-400">Loading…</p>
+          <Spinner className="mx-auto mt-8" />
         ) : decks.length === 0 ? (
           <div className="bg-white border border-gray-200 rounded-xl p-8 text-center">
             <p className="text-2xl mb-2">🃏</p>
