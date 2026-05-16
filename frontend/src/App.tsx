@@ -5,6 +5,10 @@ import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { ChatPage } from './pages/ChatPage'
+import { UploadPage } from './pages/UploadPage'
+import { FlashcardsPage } from './pages/FlashcardsPage'
+import { DeckPage } from './pages/DeckPage'
+import { SchedulePage } from './pages/SchedulePage'
 
 function App() {
   return (
@@ -26,6 +30,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute>
+                <UploadPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/flashcards"
+            element={
+              <ProtectedRoute>
+                <FlashcardsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/flashcards/:deckId"
+            element={
+              <ProtectedRoute>
+                <DeckPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/schedule"
+            element={
+              <ProtectedRoute>
+                <SchedulePage />
               </ProtectedRoute>
             }
           />

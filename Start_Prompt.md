@@ -27,15 +27,15 @@ Before doing anything else:
 | 3 | Auth (register, login, JWT) | ✅ | bcryptjs + JWT; Prisma v7 uses PrismaLibSql adapter (pass config obj not client); stale server on :3001 was masking bugs |
 | 4 | Subjects CRUD | ✅ | GET/POST/PATCH/DELETE /api/subjects; SubjectSidebar with inline add/edit/delete; useSubjects hook |
 | 5 | Chat Tutor (Gemini API + UI) | ✅ | gemini-2.5-flash streaming SSE; ChatWindow + MessageBubble + ChatPage; Normal/Beginner/Challenge modes |
-| 6 | Document Upload (Supabase Storage + text extraction) | ⬜ | |
-| 7 | Flashcard Decks (manual creation + UI) | ⬜ | |
-| 8 | AI Flashcard Generation | ⬜ | |
-| 9 | Spaced Repetition (SM-2 algorithm) | ⬜ | |
-| 10 | Quiz Mode | ⬜ | |
-| 11 | Study Scheduler | ⬜ | |
-| 12 | Dashboard & Stats | ⬜ | |
-| 13 | Testing (Jest + Playwright) | ⬜ | |
-| 14 | CI/CD (GitHub Actions) | ⬜ | |
+| 6 | Document Upload (Supabase Storage + text extraction) | ✅ | multer memoryStorage → Supabase Storage; pdf-parse/mammoth text extraction; Gemini streaming summary; UploadPage + DocumentCard |
+| 7 | Flashcard Decks (manual creation + UI) | ✅ | GET/POST/DELETE decks + cards; FlashcardsPage (deck library); DeckPage (list + study mode); FlashCard flip animation |
+| 8 | AI Flashcard Generation | ✅ | POST /decks/:id/generate (topic→cards); POST /documents/:id/flashcards (doc→cards); AI Generate panel in DeckPage; Flashcards button in DocumentCard |
+| 9 | Spaced Repetition (SM-2 algorithm) | ✅ | GET /decks/:id/due + POST /decks/:id/review (SM-2); ReviewMode component (Again/Hard/Good/Easy); StudyMode extracted to own component; DeckPage adds 🔁 Review tab with due count |
+| 10 | Quiz Mode | ✅ | Frontend-only MC quiz; QuizMode component (shuffle, 4 options, correct/wrong highlights, score screen); 🧠 Quiz tab in DeckPage; retry reshuffles |
+| 11 | Study Scheduler | ✅ | GET/POST/PATCH/DELETE /api/schedule; SchedulePage with week nav (Mon–Sun cards), add block form (date/subject/time), complete toggle, delete; 📅 Schedule link in Dashboard |
+| 12 | Dashboard & Stats | ✅ | GET /api/stats (streak, xp, studyHours, cardsReviewed); StatCard strip on DashboardPage |
+| 13 | Testing (Jest + Playwright) | ✅ | SM-2 pure unit tests + health supertest (10/10 pass); Playwright E2E auth + dashboard specs; sm2.ts extracted from decks; app.ts split from index.ts |
+| 14 | CI/CD (GitHub Actions) | ✅ | .github/workflows/ci.yml: backend tests + frontend tsc + build; deploy job (needs CI) triggers Render hooks via secrets added in Step 15 |
 | 15 | Deployment (Render + Supabase PostgreSQL) | ⬜ | |
 | 16 | Polish (responsive, loading states, error handling) | ⬜ | |
 
