@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { useSubjects } from '../hooks/useSubjects'
+import { useSubjects, type Subject } from '../hooks/useSubjects'
 import { SubjectSidebar } from '../components/SubjectSidebar'
 import { api } from '../lib/api'
 
@@ -38,6 +38,9 @@ export function DashboardPage() {
 
   const selectedSubject = subjects.find(s => s.id === selectedSubjectId)
 
+  const createSubject = async (name: string, color: string, icon: string): Promise<void> => { await create(name, color, icon) }
+  const updateSubject = async (id: string, data: Partial<Pick<Subject, 'name' | 'color' | 'icon'>>): Promise<void> => { await update(id, data) }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
@@ -65,8 +68,8 @@ export function DashboardPage() {
             subjects={subjects}
             selectedId={selectedSubjectId}
             onSelect={setSelectedSubjectId}
-            onCreate={create}
-            onUpdate={update}
+            onCreate={createSubject}
+            onUpdate={updateSubject}
             onDelete={remove}
             loading={loading}
           />
