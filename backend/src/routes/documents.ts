@@ -1,7 +1,7 @@
 import { Router, Request } from 'express'
 import multer from 'multer'
 import { createClient } from '@supabase/supabase-js'
-import ws from 'ws'
+import WebSocket from 'ws'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { prisma } from '../lib/prisma'
 import { authenticate } from '../middleware/auth'
@@ -20,7 +20,7 @@ const upload = multer({
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SECRET_KEY!,
-  { realtime: { transport: ws } }
+  { realtime: { transport: WebSocket as any } }
 )
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
