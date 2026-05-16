@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { MessageBubble } from './MessageBubble'
 
+const BASE = (import.meta.env.VITE_API_URL ?? '') + '/api'
+
 interface Message {
   id?: string
   role: 'user' | 'assistant'
@@ -32,7 +34,7 @@ export function ChatWindow({ subjectId, mode }: Props) {
     setLoading(true)
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch(`/api/chat/${subjectId}`, {
+      const res = await fetch(`${BASE}/chat/${subjectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (!res.ok) throw new Error('Failed to load history')
@@ -63,7 +65,7 @@ export function ChatWindow({ subjectId, mode }: Props) {
 
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('/api/chat', {
+      const res = await fetch(`${BASE}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +118,7 @@ export function ChatWindow({ subjectId, mode }: Props) {
   async function clearHistory() {
     if (!confirm('Clear all chat history for this subject?')) return
     const token = localStorage.getItem('token')
-    await fetch(`/api/chat/${subjectId}`, {
+    await fetch(`${BASE}/chat/${subjectId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     })
