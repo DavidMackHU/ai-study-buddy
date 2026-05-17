@@ -77,6 +77,9 @@ function AppInner() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    <p className="fixed bottom-3 right-4 text-xs text-gray-500 opacity-40 hover:opacity-80 transition-opacity pointer-events-none select-none z-40">
+      Built by David Mack
+    </p>
     </>
   )
 }
