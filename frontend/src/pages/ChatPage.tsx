@@ -5,10 +5,10 @@ import { useSubjects } from '../hooks/useSubjects'
 
 type Mode = 'normal' | 'beginner' | 'challenge'
 
-const MODES: { value: Mode; label: string }[] = [
-  { value: 'normal', label: 'Normal' },
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'challenge', label: 'Challenge' },
+const MODES: { value: Mode; label: string; short: string }[] = [
+  { value: 'normal', label: 'Normal', short: 'N' },
+  { value: 'beginner', label: 'Beginner', short: 'B' },
+  { value: 'challenge', label: 'Challenge', short: 'C' },
 ]
 
 export function ChatPage() {
@@ -39,30 +39,34 @@ export function ChatPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <nav className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 shrink-0">
-        <Link to="/dashboard" className="text-gray-400 hover:text-gray-600 text-sm">
+      <nav className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0 flex-wrap">
+        <Link
+          to="/dashboard"
+          className="text-gray-400 hover:text-gray-600 text-sm shrink-0 min-h-[44px] flex items-center"
+        >
           ← Dashboard
         </Link>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{subject.icon}</span>
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-xl shrink-0">{subject.icon}</span>
           <span
-            className="w-2 h-2 rounded-full"
+            className="w-2 h-2 rounded-full shrink-0"
             style={{ backgroundColor: subject.color }}
           />
-          <span className="font-semibold text-gray-800">{subject.name}</span>
+          <span className="font-semibold text-gray-800 text-sm truncate">{subject.name}</span>
         </div>
-        <div className="ml-auto flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="ml-auto flex items-center gap-1 bg-gray-100 rounded-lg p-1 shrink-0">
           {MODES.map(m => (
             <button
               key={m.value}
               onClick={() => setMode(m.value)}
-              className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              className={`px-2 sm:px-3 py-2 rounded-md text-xs font-medium transition-colors min-h-[36px] ${
                 mode === m.value
                   ? 'bg-white text-indigo-700 shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {m.label}
+              <span className="sm:hidden">{m.short}</span>
+              <span className="hidden sm:inline">{m.label}</span>
             </button>
           ))}
         </div>

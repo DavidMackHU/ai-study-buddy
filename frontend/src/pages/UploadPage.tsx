@@ -100,23 +100,23 @@ export function UploadPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700">
+      <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">
             ← Dashboard
           </Link>
           <h1 className="text-lg font-semibold text-indigo-600">Documents</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
-          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">
+          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">
             Sign out
           </button>
         </div>
       </nav>
 
-      <div className="max-w-3xl mx-auto px-6 py-8 space-y-6">
-        <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-5 sm:p-6 space-y-4">
           <div>
             <h2 className="font-semibold text-gray-900">Upload Document</h2>
             <p className="text-sm text-gray-500 mt-1">
@@ -127,7 +127,7 @@ export function UploadPage() {
           <select
             value={selectedSubjectId}
             onChange={e => setSelectedSubjectId(e.target.value)}
-            className="text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]"
           >
             <option value="">No subject</option>
             {subjects.map(s => (
@@ -146,7 +146,7 @@ export function UploadPage() {
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
             onClick={() => !uploading && fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors ${
+            className={`border-2 border-dashed rounded-xl p-7 sm:p-10 text-center cursor-pointer transition-colors ${
               dragOver
                 ? 'border-indigo-400 bg-indigo-50'
                 : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50'
@@ -167,7 +167,10 @@ export function UploadPage() {
             ) : (
               <div className="space-y-2">
                 <p className="text-3xl">📄</p>
-                <p className="text-sm font-medium text-gray-700">Drop a file here or click to browse</p>
+                <p className="text-sm font-medium text-gray-700">
+                  <span className="hidden sm:inline">Drop a file here or click to browse</span>
+                  <span className="sm:hidden">Tap to choose a file</span>
+                </p>
                 <p className="text-xs text-gray-400">PDF, DOCX, TXT · max 10 MB</p>
               </div>
             )}

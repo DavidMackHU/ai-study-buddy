@@ -148,15 +148,16 @@ export function DocumentCard({ doc, onDelete }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Action buttons - stacked on mobile, inline on desktop */}
+        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1.5 sm:gap-2 shrink-0">
           {doc.extractedText && (
             <>
               <button onClick={openFlashForm}
-                className="text-xs bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100">
+                className="text-xs bg-indigo-50 text-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-100 min-h-[36px] whitespace-nowrap">
                 🃏 Flashcards
               </button>
               <button onClick={summarize} disabled={summarizing}
-                className="text-xs bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 disabled:opacity-50">
+                className="text-xs bg-indigo-50 text-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-100 disabled:opacity-50 min-h-[36px] whitespace-nowrap">
                 {summarizing ? 'Summarizing…' : '✨ Summarize'}
               </button>
             </>
@@ -164,7 +165,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="text-xs text-red-400 hover:text-red-600 px-2 py-1.5"
+            className="text-xs text-red-400 hover:text-red-600 px-2 py-2 min-h-[36px]"
           >
             {deleting ? '…' : 'Delete'}
           </button>
@@ -185,7 +186,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
           <div className="flex gap-2 flex-wrap">
             {decks.length > 0 ? (
               <select value={selectedDeckId} onChange={e => setSelectedDeckId(e.target.value)}
-                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 flex-1 min-w-0">
+                className="text-xs border border-gray-200 rounded-lg px-2 py-2 flex-1 min-w-0 min-h-[36px]">
                 {decks.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
                 <option value="">+ New deck…</option>
               </select>
@@ -193,20 +194,20 @@ export function DocumentCard({ doc, onDelete }: Props) {
             {(!selectedDeckId || decks.length === 0) && (
               <input value={newDeckName} onChange={e => setNewDeckName(e.target.value)}
                 placeholder="New deck name (optional)"
-                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 flex-1 min-w-0" />
+                className="text-xs border border-gray-200 rounded-lg px-2 py-2 flex-1 min-w-0 min-h-[36px]" />
             )}
             <select value={flashCount} onChange={e => setFlashCount(e.target.value)}
-              className="text-xs border border-gray-200 rounded-lg px-2 py-1.5">
+              className="text-xs border border-gray-200 rounded-lg px-2 py-2 min-h-[36px]">
               {[5, 10, 15, 20].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
           <div className="flex gap-2">
             <button type="submit" disabled={generating}
-              className="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+              className="text-xs bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 min-h-[36px]">
               {generating ? 'Generating…' : 'Generate'}
             </button>
             <button type="button" onClick={() => setShowFlashForm(false)}
-              className="text-xs text-gray-500 px-3 py-1.5 rounded-lg hover:bg-gray-100">Cancel</button>
+              className="text-xs text-gray-500 px-3 py-2 rounded-lg hover:bg-gray-100 min-h-[36px]">Cancel</button>
           </div>
         </form>
       )}
@@ -226,7 +227,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
           )}
           <button
             onClick={() => setExpanded(false)}
-            className="mt-2 text-xs text-gray-400 hover:text-gray-600"
+            className="mt-2 text-xs text-gray-400 hover:text-gray-600 min-h-[36px]"
           >
             Hide summary
           </button>

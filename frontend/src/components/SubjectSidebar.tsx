@@ -82,26 +82,26 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
         value={form.name}
         onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
         onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); if (e.key === 'Escape') cancelEdit() }}
-        className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full text-sm border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[44px]"
       />
       <div className="flex gap-1 flex-wrap">
         {ICONS.map(icon => (
           <button
             key={icon}
             onClick={() => setForm(f => ({ ...f, icon }))}
-            className={`text-lg p-1 rounded ${form.icon === icon ? 'bg-indigo-100 ring-2 ring-indigo-500' : 'hover:bg-gray-200'}`}
+            className={`text-lg p-1.5 rounded min-w-[36px] min-h-[36px] ${form.icon === icon ? 'bg-indigo-100 ring-2 ring-indigo-500' : 'hover:bg-gray-200'}`}
           >
             {icon}
           </button>
         ))}
       </div>
-      <div className="flex gap-1 flex-wrap">
+      <div className="flex gap-1.5 flex-wrap">
         {COLORS.map(color => (
           <button
             key={color}
             onClick={() => setForm(f => ({ ...f, color }))}
             style={{ backgroundColor: color }}
-            className={`w-5 h-5 rounded-full ${form.color === color ? 'ring-2 ring-offset-1 ring-gray-700' : ''}`}
+            className={`w-6 h-6 rounded-full ${form.color === color ? 'ring-2 ring-offset-1 ring-gray-700' : ''}`}
           />
         ))}
       </div>
@@ -110,11 +110,11 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
         <button
           onClick={handleSubmit}
           disabled={saving}
-          className="flex-1 text-xs bg-indigo-600 text-white rounded py-1.5 hover:bg-indigo-700 disabled:opacity-50"
+          className="flex-1 text-xs bg-indigo-600 text-white rounded py-2.5 hover:bg-indigo-700 disabled:opacity-50 min-h-[44px]"
         >
           {saving ? 'Saving…' : editingId ? 'Save' : 'Add'}
         </button>
-        <button onClick={cancelEdit} className="flex-1 text-xs border border-gray-300 rounded py-1.5 hover:bg-gray-100">
+        <button onClick={cancelEdit} className="flex-1 text-xs border border-gray-300 rounded py-2.5 hover:bg-gray-100 min-h-[44px]">
           Cancel
         </button>
       </div>
@@ -129,7 +129,7 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
           {!showAdd && !editingId && (
             <button
               onClick={() => { setShowAdd(true); setForm(defaultForm()); setError(null) }}
-              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium px-2 py-1 min-h-[36px]"
             >
               + Add
             </button>
@@ -147,7 +147,7 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
                 inlineForm
               ) : (
                 <div
-                  className={`group flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer transition-colors ${
+                  className={`group flex items-center gap-2 px-2 py-2.5 rounded-lg cursor-pointer transition-colors ${
                     selectedId === subject.id ? 'bg-indigo-50 text-indigo-700' : 'hover:bg-gray-50 text-gray-700'
                   }`}
                   onClick={() => onSelect(subject.id === selectedId ? null : subject.id)}
@@ -158,17 +158,18 @@ export function SubjectSidebar({ subjects, selectedId, onSelect, onCreate, onUpd
                   />
                   <span className="text-sm">{subject.icon}</span>
                   <span className="text-sm flex-1 truncate">{subject.name}</span>
-                  <div className="hidden group-hover:flex gap-1">
+                  {/* Always visible on touch devices, hover-only on desktop */}
+                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 touch-device-visible">
                     <button
                       onClick={e => { e.stopPropagation(); startEdit(subject) }}
-                      className="text-gray-400 hover:text-gray-600 text-xs"
+                      className="text-gray-400 hover:text-gray-600 text-xs p-1 min-w-[28px] min-h-[28px] flex items-center justify-center"
                       title="Edit"
                     >
                       ✏️
                     </button>
                     <button
                       onClick={e => { e.stopPropagation(); handleDelete(subject.id) }}
-                      className="text-gray-400 hover:text-red-500 text-xs"
+                      className="text-gray-400 hover:text-red-500 text-xs p-1 min-w-[28px] min-h-[28px] flex items-center justify-center"
                       title="Delete"
                     >
                       🗑️

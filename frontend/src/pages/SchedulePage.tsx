@@ -116,33 +116,38 @@ export function SchedulePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700">← Dashboard</Link>
+      <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">← Dashboard</Link>
           <h1 className="text-lg font-semibold text-indigo-600">📅 Schedule</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
-          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
+          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">Sign out</button>
         </div>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-6 py-8 space-y-5">
-        <div className="flex items-center justify-between">
-          <button onClick={() => setWeekStart(d => addDays(d, -7))}
-            className="text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4 sm:space-y-5">
+        {/* Week navigator */}
+        <div className="flex items-center justify-between gap-2">
+          <button
+            onClick={() => setWeekStart(d => addDays(d, -7))}
+            className="text-sm px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 min-h-[44px]"
+          >
             ← Prev
           </button>
-          <span className="text-sm font-medium text-gray-700">{weekLabel}</span>
-          <button onClick={() => setWeekStart(d => addDays(d, 7))}
-            className="text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50">
+          <span className="text-sm font-medium text-gray-700 text-center">{weekLabel}</span>
+          <button
+            onClick={() => setWeekStart(d => addDays(d, 7))}
+            className="text-sm px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 min-h-[44px]"
+          >
             Next →
           </button>
         </div>
 
         <button
           onClick={() => { setShowForm(f => !f); setFormDate(todayYMD) }}
-          className="w-full py-2 text-sm text-indigo-600 border border-dashed border-indigo-300 rounded-xl hover:bg-indigo-50"
+          className="w-full py-3 text-sm text-indigo-600 border border-dashed border-indigo-300 rounded-xl hover:bg-indigo-50 min-h-[44px]"
         >
           + Add Study Block
         </button>
@@ -150,16 +155,16 @@ export function SchedulePage() {
         {showForm && (
           <form onSubmit={addBlock} className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
             <h3 className="font-medium text-gray-900 text-sm">New Study Block</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-medium text-gray-500 block mb-1">Date</label>
                 <input type="date" value={formDate} onChange={e => setFormDate(e.target.value)} required
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]" />
               </div>
               <div>
                 <label className="text-xs font-medium text-gray-500 block mb-1">Subject (optional)</label>
                 <select value={formSubject} onChange={e => setFormSubject(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                  className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]">
                   <option value="">No subject</option>
                   {subjects.map(s => <option key={s.id} value={s.id}>{s.icon} {s.name}</option>)}
                 </select>
@@ -167,21 +172,21 @@ export function SchedulePage() {
               <div>
                 <label className="text-xs font-medium text-gray-500 block mb-1">Start time</label>
                 <input type="time" value={formStart} onChange={e => setFormStart(e.target.value)} required
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]" />
               </div>
               <div>
                 <label className="text-xs font-medium text-gray-500 block mb-1">End time</label>
                 <input type="time" value={formEnd} onChange={e => setFormEnd(e.target.value)} required
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]" />
               </div>
             </div>
             <div className="flex gap-2">
               <button type="submit" disabled={adding}
-                className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                className="text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50 min-h-[44px]">
                 {adding ? 'Adding…' : 'Add Block'}
               </button>
               <button type="button" onClick={() => setShowForm(false)}
-                className="text-sm text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
+                className="text-sm text-gray-500 px-4 py-2.5 rounded-lg hover:bg-gray-100 min-h-[44px]">Cancel</button>
             </div>
           </form>
         )}
@@ -200,7 +205,7 @@ export function SchedulePage() {
               const isToday = ymd === todayYMD
               return (
                 <div key={ymd} className={`bg-white border rounded-xl overflow-hidden ${isToday ? 'border-indigo-300' : 'border-gray-200'}`}>
-                  <div className={`px-4 py-2.5 flex items-center justify-between ${isToday ? 'bg-indigo-50' : 'bg-gray-50'}`}>
+                  <div className={`px-4 py-3 flex items-center justify-between ${isToday ? 'bg-indigo-50' : 'bg-gray-50'}`}>
                     <span className={`text-sm font-medium ${isToday ? 'text-indigo-700' : 'text-gray-700'}`}>
                       {dayLabel(day)}{isToday ? ' · Today' : ''}
                     </span>
@@ -214,9 +219,12 @@ export function SchedulePage() {
                     <ul className="divide-y divide-gray-100">
                       {dayBlocks.map(block => (
                         <li key={block.id} className="px-4 py-3 flex items-center gap-3">
+                          {/* Larger touch target for checkbox */}
                           <button
                             onClick={() => toggleComplete(block.id)}
-                            className={`shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${block.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 hover:border-indigo-400'}`}
+                            className={`shrink-0 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors min-w-[24px] min-h-[24px] ${
+                              block.completed ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 hover:border-indigo-400'
+                            }`}
                           >
                             {block.completed && <span className="text-white text-xs leading-none">✓</span>}
                           </button>
@@ -228,8 +236,10 @@ export function SchedulePage() {
                             </p>
                             <p className="text-xs text-gray-400">{block.startTime} – {block.endTime}</p>
                           </div>
-                          <button onClick={() => deleteBlock(block.id)}
-                            className="text-xs text-red-400 hover:text-red-600 shrink-0 px-1">
+                          <button
+                            onClick={() => deleteBlock(block.id)}
+                            className="text-xs text-red-400 hover:text-red-600 shrink-0 px-2 py-2 min-h-[36px] flex items-center"
+                          >
                             ✕
                           </button>
                         </li>

@@ -112,44 +112,44 @@ export function DeckPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/flashcards" className="text-sm text-gray-500 hover:text-gray-700">← Decks</Link>
-          <h1 className="text-lg font-semibold text-indigo-600">{deck.name}</h1>
+      <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <Link to="/flashcards" className="text-sm text-gray-500 hover:text-gray-700 shrink-0 min-h-[44px] flex items-center">← Decks</Link>
+          <h1 className="text-lg font-semibold text-indigo-600 truncate">{deck.name}</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
           <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
-          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
+          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">Sign out</button>
         </div>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-6">
         {/* Mode toggle */}
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setMode('list')}
-            className={`text-sm px-4 py-2 rounded-lg font-medium ${mode === 'list' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+            className={`text-sm px-4 py-2.5 rounded-lg font-medium min-h-[44px] ${mode === 'list' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
           >
             📋 Cards ({cards.length})
           </button>
           {cards.length > 0 && (
             <button
               onClick={() => { setStudyIndex(0); setMode('study') }}
-              className={`text-sm px-4 py-2 rounded-lg font-medium ${mode === 'study' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+              className={`text-sm px-4 py-2.5 rounded-lg font-medium min-h-[44px] ${mode === 'study' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
             >
-              🎴 Study Mode
+              🎴 Study
             </button>
           )}
           <button
             onClick={() => setMode('review')}
-            className={`text-sm px-4 py-2 rounded-lg font-medium ${mode === 'review' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+            className={`text-sm px-4 py-2.5 rounded-lg font-medium min-h-[44px] ${mode === 'review' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
           >
-            🔁 Review{dueCards.length > 0 ? ` (${dueCards.length} due)` : ''}
+            🔁 Review{dueCards.length > 0 ? ` (${dueCards.length})` : ''}
           </button>
           {cards.length > 0 && (
             <button
               onClick={() => setMode('quiz')}
-              className={`text-sm px-4 py-2 rounded-lg font-medium ${mode === 'quiz' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+              className={`text-sm px-4 py-2.5 rounded-lg font-medium min-h-[44px] ${mode === 'quiz' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
             >
               🧠 Quiz
             </button>
@@ -191,11 +191,11 @@ export function DeckPage() {
               <p className="text-sm text-gray-500">{cards.length} card{cards.length !== 1 ? 's' : ''}</p>
               <div className="flex gap-2">
                 <button onClick={() => { setShowGenForm(f => !f); setShowAddForm(false) }}
-                  className="text-sm bg-indigo-50 text-indigo-600 px-3 py-2 rounded-lg hover:bg-indigo-100 font-medium">
+                  className="text-sm bg-indigo-50 text-indigo-600 px-3 py-2.5 rounded-lg hover:bg-indigo-100 font-medium min-h-[44px]">
                   ✨ AI Generate
                 </button>
                 <button onClick={() => { setShowAddForm(f => !f); setShowGenForm(false) }}
-                  className="text-sm bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700">
+                  className="text-sm bg-indigo-600 text-white px-3 py-2.5 rounded-lg hover:bg-indigo-700 min-h-[44px]">
                   + Add Card
                 </button>
               </div>
@@ -206,18 +206,18 @@ export function DeckPage() {
                 <h3 className="font-medium text-gray-900 text-sm">✨ Generate with AI</h3>
                 <textarea autoFocus rows={2} value={genTopic} onChange={e => setGenTopic(e.target.value)}
                   placeholder="e.g. Photosynthesis, the French Revolution, Newton's laws…"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
                 <div className="flex items-center gap-3 flex-wrap">
                   <select value={genCount} onChange={e => setGenCount(e.target.value)}
-                    className="text-sm border border-gray-200 rounded-lg px-3 py-2">
+                    className="text-sm border border-gray-200 rounded-lg px-3 py-2.5 min-h-[44px]">
                     {[5, 10, 15, 20].map(n => <option key={n} value={n}>{n} cards</option>)}
                   </select>
                   <button type="submit" disabled={generating || !genTopic.trim()}
-                    className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                    className="text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50 min-h-[44px]">
                     {generating ? 'Generating…' : 'Generate'}
                   </button>
                   <button type="button" onClick={() => { setShowGenForm(false); setGenTopic('') }}
-                    className="text-sm text-gray-500 px-3 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
+                    className="text-sm text-gray-500 px-3 py-2.5 rounded-lg hover:bg-gray-100 min-h-[44px]">Cancel</button>
                 </div>
                 {generating && <p className="text-xs text-indigo-400 animate-pulse">Gemini is writing your flashcards…</p>}
                 {genError && <p className="text-xs text-red-600">{genError}</p>}
@@ -231,21 +231,21 @@ export function DeckPage() {
                   <label className="text-xs font-medium text-gray-500 block mb-1">Front (question / term)</label>
                   <textarea autoFocus rows={2} value={front} onChange={e => setFront(e.target.value)}
                     placeholder="What is the mitochondria?"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
                 </div>
                 <div>
                   <label className="text-xs font-medium text-gray-500 block mb-1">Back (answer / definition)</label>
                   <textarea rows={2} value={back} onChange={e => setBack(e.target.value)}
                     placeholder="The powerhouse of the cell."
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none" />
                 </div>
                 <div className="flex gap-2">
                   <button type="submit" disabled={adding || !front.trim() || !back.trim()}
-                    className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                    className="text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50 min-h-[44px]">
                     {adding ? 'Adding…' : 'Add Card'}
                   </button>
                   <button type="button" onClick={() => { setShowAddForm(false); setFront(''); setBack('') }}
-                    className="text-sm text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100">
+                    className="text-sm text-gray-500 px-4 py-2.5 rounded-lg hover:bg-gray-100 min-h-[44px]">
                     Cancel
                   </button>
                 </div>
@@ -261,7 +261,7 @@ export function DeckPage() {
               <div className="space-y-2">
                 {cards.map((card, i) => (
                   <div key={card.id} className="bg-white border border-gray-200 rounded-xl p-4 flex gap-4 items-start">
-                    <span className="text-xs text-gray-300 font-mono pt-0.5 shrink-0">{i + 1}</span>
+                    <span className="text-xs text-gray-300 font-mono pt-1 shrink-0">{i + 1}</span>
                     <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                       <div>
                         <p className="text-xs font-semibold text-gray-400 mb-1">Front</p>
@@ -273,7 +273,7 @@ export function DeckPage() {
                       </div>
                     </div>
                     <button onClick={() => deleteCard(card.id)}
-                      className="text-xs text-red-400 hover:text-red-600 shrink-0">
+                      className="text-xs text-red-400 hover:text-red-600 shrink-0 px-2 py-1 min-h-[36px]">
                       Delete
                     </button>
                   </div>

@@ -64,23 +64,23 @@ export function FlashcardsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700">← Dashboard</Link>
+      <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <Link to="/dashboard" className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">← Dashboard</Link>
           <h1 className="text-lg font-semibold text-indigo-600">Flashcards</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span className="hidden sm:inline text-sm text-gray-600">{user?.name}</span>
-          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">Sign out</button>
+          <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700 min-h-[44px] flex items-center">Sign out</button>
         </div>
       </nav>
 
-      <div className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">Your Decks</h2>
           <button
             onClick={() => setShowForm(f => !f)}
-            className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+            className="text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 min-h-[44px]"
           >
             + New Deck
           </button>
@@ -95,12 +95,12 @@ export function FlashcardsPage() {
               placeholder="Deck name (e.g. Chapter 3 Vocab)"
               value={newName}
               onChange={e => setNewName(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]"
             />
             <select
               value={newSubjectId}
               onChange={e => setNewSubjectId(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 min-h-[44px]"
             >
               <option value="">No subject</option>
               {subjects.map(s => (
@@ -111,14 +111,14 @@ export function FlashcardsPage() {
               <button
                 type="submit"
                 disabled={creating || !newName.trim()}
-                className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                className="text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 disabled:opacity-50 min-h-[44px]"
               >
                 {creating ? 'Creating…' : 'Create'}
               </button>
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="text-sm text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100"
+                className="text-sm text-gray-500 px-4 py-2.5 rounded-lg hover:bg-gray-100 min-h-[44px]"
               >
                 Cancel
               </button>
@@ -152,7 +152,7 @@ export function FlashcardsPage() {
                   </div>
                   <button
                     onClick={() => deleteDeck(deck.id, deck.name)}
-                    className="text-xs text-red-400 hover:text-red-600 shrink-0"
+                    className="text-xs text-red-400 hover:text-red-600 shrink-0 px-2 py-1 min-h-[36px]"
                   >
                     Delete
                   </button>
@@ -160,7 +160,7 @@ export function FlashcardsPage() {
                 <p className="text-xs text-gray-400">{deck._count.cards} card{deck._count.cards !== 1 ? 's' : ''}</p>
                 <Link
                   to={`/flashcards/${deck.id}`}
-                  className="text-sm text-center bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-100 font-medium"
+                  className="text-sm text-center bg-indigo-50 text-indigo-600 px-4 py-3 rounded-lg hover:bg-indigo-100 font-medium min-h-[44px] flex items-center justify-center"
                 >
                   Open Deck →
                 </Link>

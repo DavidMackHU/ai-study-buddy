@@ -138,12 +138,12 @@ export function ChatWindow({ subjectId, mode }: Props) {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
         {messages.length === 0 && (
           <div className="text-center text-gray-400 text-sm mt-12">
             <p className="text-4xl mb-3">🎓</p>
             <p>Ask me anything about this subject!</p>
-            <p className="text-xs mt-1">Press Enter to send, Shift+Enter for a new line.</p>
+            <p className="text-xs mt-1 hidden sm:block">Press Enter to send, Shift+Enter for a new line.</p>
           </div>
         )}
         {messages.map((msg, i) => (
@@ -155,7 +155,8 @@ export function ChatWindow({ subjectId, mode }: Props) {
         <div ref={bottomRef} />
       </div>
 
-      <div className="border-t border-gray-200 bg-white px-4 py-3">
+      {/* Input fixed to bottom on mobile via the flex column layout */}
+      <div className="border-t border-gray-200 bg-white px-3 sm:px-4 py-3 safe-area-bottom">
         <div className="flex gap-2 items-end">
           <textarea
             ref={textareaRef}
@@ -165,20 +166,20 @@ export function ChatWindow({ subjectId, mode }: Props) {
             onKeyDown={handleKeyDown}
             placeholder="Ask a question…"
             disabled={sending}
-            className="flex-1 resize-none border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 max-h-32 overflow-y-auto"
-            style={{ minHeight: '40px' }}
+            className="flex-1 resize-none border border-gray-300 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 max-h-32 overflow-y-auto"
+            style={{ minHeight: '44px' }}
           />
           <button
             onClick={send}
             disabled={!input.trim() || sending}
-            className="bg-indigo-600 text-white rounded-xl px-4 py-2 text-sm hover:bg-indigo-700 disabled:opacity-40 shrink-0"
+            className="bg-indigo-600 text-white rounded-xl px-4 text-sm hover:bg-indigo-700 disabled:opacity-40 shrink-0 min-h-[44px]"
           >
             {sending ? '…' : 'Send'}
           </button>
           {messages.length > 0 && (
             <button
               onClick={clearHistory}
-              className="text-gray-400 hover:text-gray-600 text-xs px-2 py-2"
+              className="text-gray-400 hover:text-gray-600 text-xs px-2 min-h-[44px] flex items-center"
               title="Clear history"
             >
               🗑️
