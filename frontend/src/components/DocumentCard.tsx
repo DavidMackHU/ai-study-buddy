@@ -80,6 +80,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
 
     const token = localStorage.getItem('token')
     const res = await fetch(`${BASE}/documents/${doc.id}/summarize`, {
+      method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     })
 
