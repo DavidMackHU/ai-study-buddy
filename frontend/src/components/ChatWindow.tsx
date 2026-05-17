@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { MessageBubble } from './MessageBubble'
+import { useToast } from '../contexts/ToastContext'
+import { friendlyError } from '../lib/errors'
 
 const BASE = (import.meta.env.VITE_API_URL ?? '') + '/api'
 
@@ -16,11 +18,11 @@ interface Props {
 }
 
 export function ChatWindow({ subjectId, mode }: Props) {
+  const addToast = useToast()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -40,8 +42,8 @@ export function ChatWindow({ subjectId, mode }: Props) {
       if (!res.ok) throw new Error('Failed to load history')
       const data = await res.json()
       setMessages(data)
-    } catch {
-      setError('Failed to load chat history')
+    } catch (e) {
+      addToast(friendlyError(e, 'chat'))
     } finally {
       setLoading(false)
     }
@@ -56,7 +58,6 @@ export function ChatWindow({ subjectId, mode }: Props) {
     const text = input.trim()
     if (!text || sending) return
     setInput('')
-    setError(null)
     setSending(true)
 
     const userMsg: Message = { role: 'user', content: text }
@@ -108,7 +109,7 @@ export function ChatWindow({ subjectId, mode }: Props) {
         return [...prev.slice(0, -1), { ...last, streaming: false }]
       })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong')
+      addToast(friendlyError(e, 'chat'))
       setMessages(prev => prev.slice(0, -1))
     } finally {
       setSending(false)
@@ -149,9 +150,6 @@ export function ChatWindow({ subjectId, mode }: Props) {
         {messages.map((msg, i) => (
           <MessageBubble key={i} role={msg.role} content={msg.content} streaming={msg.streaming} />
         ))}
-        {error && (
-          <div className="text-center text-red-500 text-sm py-2">{error}</div>
-        )}
         <div ref={bottomRef} />
       </div>
 

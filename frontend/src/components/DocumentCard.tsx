@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { api } from '../lib/api'
+import { useToast } from '../contexts/ToastContext'
+import { friendlyError } from '../lib/errors'
 
 interface Deck {
   id: string
@@ -31,6 +33,7 @@ interface Props {
 const BASE = (import.meta.env.VITE_API_URL ?? '') + '/api'
 
 export function DocumentCard({ doc, onDelete }: Props) {
+  const addToast = useToast()
   const [summary, setSummary] = useState('')
   const [summarizing, setSummarizing] = useState(false)
   const [expanded, setExpanded] = useState(false)
@@ -64,7 +67,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
       setGenResult({ deckId: result.deckId, count: result.cards.length })
       setShowFlashForm(false)
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Generation failed')
+      addToast(friendlyError(err, 'flashcards'))
     } finally {
       setGenerating(false)
     }
@@ -81,8 +84,9 @@ export function DocumentCard({ doc, onDelete }: Props) {
     })
 
     if (!res.ok || !res.body) {
-      setSummary('Failed to generate summary.')
+      addToast("Couldn't reach the AI tutor. Please try again.")
       setSummarizing(false)
+      setExpanded(false)
       return
     }
 
@@ -102,7 +106,7 @@ export function DocumentCard({ doc, onDelete }: Props) {
         if (payload === '[DONE]') { setSummarizing(false); return }
         try {
           const { text, error } = JSON.parse(payload)
-          if (error) { setSummary(prev => prev + '\n\nError: ' + error); setSummarizing(false); return }
+          if (error) { addToast("Couldn't reach the AI tutor. Please try again."); setSummarizing(false); setExpanded(false); return }
           if (text) setSummary(prev => prev + text)
         } catch { /* partial chunk */ }
       }

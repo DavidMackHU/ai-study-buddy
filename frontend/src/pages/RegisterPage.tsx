@@ -1,25 +1,26 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useToast } from '../contexts/ToastContext'
+import { friendlyError } from '../lib/errors'
 
 export function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
+  const addToast = useToast()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    setError('')
     setLoading(true)
     try {
       await register(name, email, password)
       navigate('/dashboard')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed')
+      addToast(friendlyError(err, 'auth'))
     } finally {
       setLoading(false)
     }
@@ -30,12 +31,6 @@ export function RegisterPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">Create account</h1>
         <p className="text-gray-500 text-sm mb-6">Start studying smarter today</p>
-
-        {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

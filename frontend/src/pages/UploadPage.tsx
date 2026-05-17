@@ -5,6 +5,7 @@ import { useSubjects } from '../hooks/useSubjects'
 import { DocumentCard } from '../components/DocumentCard'
 import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
+import { useToast } from '../contexts/ToastContext'
 
 interface DocSubject {
   name: string
@@ -33,10 +34,10 @@ const ALLOWED_TYPES = [
 export function UploadPage() {
   const { user, logout } = useAuth()
   const { subjects } = useSubjects()
+  const addToast = useToast()
   const [documents, setDocuments] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
-  const [uploadError, setUploadError] = useState('')
   const [selectedSubjectId, setSelectedSubjectId] = useState('')
   const [dragOver, setDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -49,9 +50,8 @@ export function UploadPage() {
   }, [])
 
   async function uploadFile(file: File) {
-    setUploadError('')
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setUploadError('Only PDF, DOCX, and TXT files are supported.')
+      addToast('Only PDF, DOCX, and TXT files are supported.')
       return
     }
 
@@ -68,14 +68,13 @@ export function UploadPage() {
         body: formData,
       })
       if (!res.ok) {
-        const data = await res.json()
-        setUploadError(data.error || 'Upload failed')
+        addToast('Upload failed. Check your file size (max 10MB) and try again.')
         return
       }
       const refreshed = await api.get<Document[]>('/documents')
       setDocuments(refreshed)
     } catch {
-      setUploadError('Upload failed. Check your connection.')
+      addToast('Upload failed. Check your file size (max 10MB) and try again.')
     } finally {
       setUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
@@ -134,12 +133,6 @@ export function UploadPage() {
               <option key={s.id} value={s.id}>{s.icon} {s.name}</option>
             ))}
           </select>
-
-          {uploadError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
-              {uploadError}
-            </div>
-          )}
 
           <div
             onDragOver={e => { e.preventDefault(); setDragOver(true) }}

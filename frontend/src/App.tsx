@@ -11,8 +11,10 @@ import { DeckPage } from './pages/DeckPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { WakeUpScreen } from './components/WakeUpScreen'
 import { useServerReady } from './hooks/useServerReady'
+import { ToastProvider } from './contexts/ToastContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
-function App() {
+function AppInner() {
   const serverPhase = useServerReady()
 
   return (
@@ -76,6 +78,16 @@ function App() {
       </BrowserRouter>
     </AuthProvider>
     </>
+  )
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <ToastProvider>
+        <AppInner />
+      </ToastProvider>
+    </ErrorBoundary>
   )
 }
 
