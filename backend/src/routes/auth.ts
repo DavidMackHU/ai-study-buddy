@@ -65,4 +65,17 @@ router.get('/me', authenticate, async (req, res) => {
   res.json({ user: safeUser })
 })
 
+router.patch('/onboard', authenticate, async (req, res) => {
+  const { weeklyStudyGoal } = req.body
+  const user = await prisma.user.update({
+    where: { id: req.userId! },
+    data: {
+      isOnboarded: true,
+      ...(typeof weeklyStudyGoal === 'number' ? { weeklyStudyGoal } : {}),
+    },
+  })
+  const { password: _pw, ...safeUser } = user
+  res.json({ user: safeUser })
+})
+
 export default router

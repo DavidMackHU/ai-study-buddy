@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useSubjects, type Subject } from '../hooks/useSubjects'
 import { SubjectSidebar } from '../components/SubjectSidebar'
+import { OnboardingModal } from '../components/OnboardingModal'
 import { api } from '../lib/api'
 
 interface Stats {
@@ -27,7 +28,7 @@ function StatCard({ icon, label, value }: { icon: string; label: string; value: 
 }
 
 export function DashboardPage() {
-  const { user, logout } = useAuth()
+  const { user, logout, completeOnboarding } = useAuth()
   const { subjects, loading, create, update, remove } = useSubjects()
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null)
   const [stats, setStats] = useState<Stats | null>(null)
@@ -52,6 +53,9 @@ export function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {user && !user.isOnboarded && (
+        <OnboardingModal onComplete={completeOnboarding} />
+      )}
       <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
         <h1 className="text-lg font-semibold text-indigo-600">AI Study Buddy</h1>
         <div className="flex items-center gap-4">

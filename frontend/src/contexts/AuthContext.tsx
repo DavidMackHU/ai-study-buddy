@@ -8,6 +8,8 @@ interface User {
   streak: number
   xp: number
   createdAt: string
+  isOnboarded: boolean
+  weeklyStudyGoal: number | null
 }
 
 interface AuthContextValue {
@@ -17,6 +19,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<void>
   register: (name: string, email: string, password: string) => Promise<void>
   logout: () => void
+  completeOnboarding: (weeklyStudyGoal?: number) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -60,8 +63,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
+  async function completeOnboarding(weeklyStudyGoal?: number) {
+    const { user: updated } = await api.patch<{ user: User }>('/auth/onboard', { weeklyStudyGoal })
+    setUser(updated)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, completeOnboarding }}>
       {children}
     </AuthContext.Provider>
   )
