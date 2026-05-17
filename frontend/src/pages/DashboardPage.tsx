@@ -52,7 +52,7 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex-1 bg-gray-50">
       {user && !user.isOnboarded && (
         <OnboardingModal onComplete={completeOnboarding} />
       )}

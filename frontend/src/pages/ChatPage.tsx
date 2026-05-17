@@ -20,7 +20,7 @@ export function ChatPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center text-gray-400">
+      <div className="flex-1 bg-gray-50 flex items-center justify-center text-gray-400">
         Loading…
       </div>
     )
@@ -28,7 +28,7 @@ export function ChatPage() {
 
   if (!subject) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
+      <div className="flex-1 bg-gray-50 flex flex-col items-center justify-center gap-4">
         <p className="text-gray-500">Subject not found.</p>
         <Link to="/dashboard" className="text-indigo-600 hover:underline text-sm">
           ← Back to Dashboard
@@ -38,7 +38,7 @@ export function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="flex-1 bg-gray-50 flex flex-col">
       <nav className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0 flex-wrap">
         <Link
           to="/dashboard"

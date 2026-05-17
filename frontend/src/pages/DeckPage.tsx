@@ -104,14 +104,14 @@ export function DeckPage() {
 
   if (!deck) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex-1 bg-gray-50 flex items-center justify-center">
         <p className="text-gray-500 text-sm">Deck not found.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex-1 bg-gray-50">
       <nav className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
           <Link to="/flashcards" className="text-sm text-gray-500 hover:text-gray-700 shrink-0 min-h-[44px] flex items-center">← Decks</Link>
