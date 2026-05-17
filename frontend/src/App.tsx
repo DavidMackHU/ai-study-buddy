@@ -9,10 +9,16 @@ import { UploadPage } from './pages/UploadPage'
 import { FlashcardsPage } from './pages/FlashcardsPage'
 import { DeckPage } from './pages/DeckPage'
 import { SchedulePage } from './pages/SchedulePage'
+import { WakeUpScreen } from './components/WakeUpScreen'
+import { useServerReady } from './hooks/useServerReady'
 
 function App() {
+  const serverPhase = useServerReady()
+
   return (
-    <AuthProvider>
+    <>
+      {serverPhase === 'waking' && <WakeUpScreen />}
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -69,6 +75,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </>
   )
 }
 
