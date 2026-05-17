@@ -150,12 +150,12 @@ export function DashboardPage() {
             ) : (
               <div className="bg-white border border-gray-200 rounded-xl p-8 text-center">
                 <h2 className="text-xl font-bold text-gray-900 mb-2">Welcome back, {user?.name}!</h2>
-                <p className="text-gray-500 text-sm">
-                  {sidebarOpen
-                    ? 'Select a subject from the list above.'
-                    : 'Tap "Subjects" to pick a subject, or create your first one to get started.'}
+                <p className="md:hidden text-gray-500 text-sm">
+                  Tap &ldquo;Subjects&rdquo; to pick a subject, or create your first one to get started.
                 </p>
-                <p className="hidden lg:block text-gray-500 text-sm">Select a subject from the sidebar, or create your first one to get started.</p>
+                <p className="hidden md:block text-gray-500 text-sm">
+                  Select a subject from the sidebar, or create your first one to get started.
+                </p>
               </div>
             )}
           </main>
